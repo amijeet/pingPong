@@ -1,0 +1,22 @@
+.drawingArea {
+	width: 100%;
+	border: 3px orangered solid;
+}
+h1 {
+	text-align: center;
+}
+.container {
+	width: 75%;
+	margin: 0 auto 0 auto;
+}
+body {
+	background-color: rgb(78, 59, 59);
+	color: white;
+	text-align: center;
+}
+.btn {
+	margin: 1%;
+}
+.controlOptions {
+	margin: 1% auto 0 auto;
+}
