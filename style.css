@@ -1,22 +1,25 @@
-.drawingArea {
-	width: 100%;
-	border: 3px orangered solid;
-}
-h1 {
-	text-align: center;
-}
-.container {
-	width: 75%;
-	margin: 0 auto 0 auto;
-}
+/* HTML ELEMENTS */
 body {
-	background-color: rgb(78, 59, 59);
-	color: white;
+	font-family: "Ubuntu Mono", monospace;
 	text-align: center;
 }
-.btn {
-	margin: 1%;
+h1{
+    font-size: 3rem;
 }
-.controlOptions {
-	margin: 1% auto 0 auto;
+/* CLASSES */
+.container {
+	width: 80%;
+    margin: 0 auto 0 auto;
+}
+.drawingArea {
+	border: 3px solid orangered;
+	width: 100%;
+}
+.btn{
+    background-color: tomato;
+    margin: 1%;
+    font-size: 1.5rem;
+}
+.btn:hover{
+    background-color: rgb(250, 109, 84);
 }
