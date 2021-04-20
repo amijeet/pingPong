@@ -2,11 +2,20 @@ const canvas = document.querySelector(".drawingArea");
 const c = canvas.getContext("2d");
 const width = canvas.width;
 const height = canvas.height;
+const drawingArea = document.getElementById("drawingArea");
+const collisionNumber = document.getElementById("numberOfCollisions");
 
 // GLOBAL VARIABLES
 var balls;
 var requestID;
 var count = 0;
+var mousex = width/2, mousey = height/2;
+
+// EVENT LISTENER
+drawingArea.addEventListener('mousemove', e => {
+	mousex = e.offsetX;
+	mousey = e.offsetY;
+  });
 
 // FUNCTIONS
 function degToRad(degree) {
@@ -17,12 +26,12 @@ function randomInt(max, min) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function randomRGB() {
+function randomRGB(opacity) {
 	let r = randomInt(0, 255);
 	let b = randomInt(0, 255);
 	let g = randomInt(0, 255);
 
-	return "rgb(" + r + ", " + g + ", " + b + ")";
+	return "rgb(" + r + ", " + g + ", " + b + ", " + opacity + ")";
 }
 
 function isColliding(ball1, ball2) {
@@ -30,10 +39,14 @@ function isColliding(ball1, ball2) {
 	else return false;
 }
 
+function distance( X, Y, x, y ){
+	return Math.sqrt( (X-x)**2 + (Y-y)**2 );
+}
+
 function init() {
 	balls = [];
 
-	for (var i = 0; i < 20; i++) {
+	for (var i = 0; i < 25; i++) {
 		balls.push(returnBall());
 		for (var j = 0; j < balls.length - 1; j++) {
 			if (isColliding(balls[i], balls[j])) {
@@ -54,7 +67,8 @@ function returnBall() {
 		},
 		vx: randomInt(-5, 5),
 		vy: randomInt(-5, 5),
-		color: randomRGB(),
+		color: randomRGB(this.opacity),
+		opacity: 0,
 	};
 	return ball;
 }
@@ -107,21 +121,34 @@ function resolveCollision(ball1, ball2) {
 
 function update(ball) {
 	draw(ball);
-
+	collisionNumber.innerHTML = count;
 	for (var i = 0; i < balls.length; i++) {
 		if (ball === balls[i]) continue;
 		if (isColliding(ball, balls[i])) {
 			resolveCollision(ball, balls[i]);
-			ball.color = randomRGB();
-			balls[i].color = randomRGB();
+			ball.opacity += 0.03;
+			ball.color = randomRGB(ball.opacity);
+			balls[i].opacity += 0.03
+			balls[i].color = randomRGB(balls[i].opacity);
+			count += 1;
 		}
 	}
 	if (ball.x - ball.r <= 0 || ball.x + ball.r >= width) {
 		ball.vx = -1 * ball.vx;
+		ball.opacity += 0.03;
+		count += 1;
 	}
 	if (ball.y - ball.r <= 0 || ball.y + ball.r >= height) {
 		ball.vy = -1 * ball.vy;
+		ball.opacity += 0.03;
+		count += 1;
 	}
+	// if( distance(mousex, mousey, ball.x, ball.y) < 300 && ball.opacity < 0.5 ){
+	// 	ball.opacity += 0.03;
+	// }else if( ball.opacity > 0 ){
+	// 	ball.opacity -= 0.02;
+	// 	ball.opacity = Math.max(0, ball.opacity);
+	// }
 	ball.x += ball.vx;
 	ball.y += ball.vy;
 }
@@ -134,5 +161,7 @@ function animate() {
 	requestID = requestAnimationFrame(animate);
 }
 
-init();
-animate();
+function start(){
+	init();
+	animate();
+}
